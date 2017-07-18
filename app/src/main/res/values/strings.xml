@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FireChat</string>
+    <array name="genre">
+        <item>Rock</item>
+        <item>Classical</item>
+        <item>Pop</item>
+        <item>Country</item>
+        <item>Rap</item>
+    </array>
 </resources>

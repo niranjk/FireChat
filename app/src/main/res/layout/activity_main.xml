@@ -7,11 +7,28 @@
     android:id="@+id/activity_main"
     tools:context="com.khatri.niranjank.firechat.MainActivity">
 
-
-
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/main_edit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Main Activity"/>
+        android:hint="Enter Name"/>
+
+    <Spinner
+        android:id="@+id/main_spinnerGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/main_edit"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="11dp"
+        android:entries="@array/genre"/>
+
+    <Button
+        android:id="@+id/main_button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/main_spinnerGenre"
+        android:layout_below="@+id/main_spinnerGenre"
+        android:text="Enter Artist" />
 
 </RelativeLayout>
