@@ -12,8 +12,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddTrackActivity extends AppCompatActivity {
 
@@ -27,6 +33,7 @@ public class AddTrackActivity extends AppCompatActivity {
     // first create the database reference object
     DatabaseReference databaseTracks;
 
+    List<Track> tracks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,9 @@ public class AddTrackActivity extends AppCompatActivity {
         buttonAddTrack = (Button) findViewById(R.id.addtrack_addTrack);
 
         Intent intent = getIntent();
+
+        tracks = new ArrayList<>();
+
 
         String id = intent.getStringExtra(MainActivity.ARTIST_ID);
         String name = intent.getStringExtra(MainActivity.ARTIST_NAME);
@@ -71,5 +81,32 @@ public class AddTrackActivity extends AppCompatActivity {
             Toast.makeText(this,"track name should not be empty", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        databaseTracks.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tracks.clear();
+
+                for(DataSnapshot trackSnaphot : dataSnapshot.getChildren()){
+                    Track track = trackSnaphot.getValue(Track.class);
+
+                    tracks.add(track);
+                }
+
+                TrackListAdapter trackListAdapter = new TrackListAdapter(AddTrackActivity.this,tracks);
+                listViewTracks.setAdapter(trackListAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
