@@ -1,6 +1,7 @@
 package com.khatri.niranjank.firechat;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -160,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
         listOfMessage.setAdapter(adapter);
     }
-
 
 
     /*
