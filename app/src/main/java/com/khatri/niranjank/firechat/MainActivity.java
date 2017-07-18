@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference databaseArtist;
 
+    ListView listViewArtist;
+
+    List<Artist> artistList;
 
 
     @Override
@@ -40,10 +51,41 @@ public class MainActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.main_spinnerGenre);
 
 
+        listViewArtist = (ListView) findViewById(R.id.listview);
+        artistList = new ArrayList<>();
+
+
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 addArtist();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        databaseArtist.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                artistList.clear();
+
+                for(DataSnapshot artistSnapshot: dataSnapshot.getChildren()){
+                    Artist artist = artistSnapshot.getValue(Artist.class);
+
+                    artistList.add(artist);
+                }
+
+                ArtistListAdapter adapter = new ArtistListAdapter(MainActivity.this,artistList);
+                listViewArtist.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
